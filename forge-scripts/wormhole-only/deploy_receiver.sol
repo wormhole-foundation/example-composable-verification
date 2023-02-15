@@ -5,7 +5,7 @@ pragma solidity ^0.8.17;
 import "forge-std/Script.sol";
 import "forge-std/console.sol";
 
-import { Receiver } from "../contracts/wormhole-only/Receiver.sol";
+import { WormholeReceiver } from "../../contracts/wormhole-only/WormholeReceiver.sol";
 
 contract ContractScript is Script {
   function deployReceiver() public {
@@ -15,7 +15,7 @@ contract ContractScript is Script {
     bytes32 emitterAddress = bytes32(vm.envBytes("EMITTER_ADDRESS"));
 
     // deploy the contract and set up the contract
-    new Receiver(wormhole, emitterChainId, emitterAddress);
+    new WormholeReceiver(wormhole, emitterChainId, emitterAddress);
   }
 
   function run() public {

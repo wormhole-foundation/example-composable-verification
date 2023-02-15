@@ -5,15 +5,12 @@ pragma solidity ^0.8.17;
 import "forge-std/Script.sol";
 import "forge-std/console.sol";
 
-import { Sender } from "../contracts/wormhole-only/Sender.sol";
+import { NativeSender } from "../../contracts/native-only/NativeSender.sol";
 
 contract ContractScript is Script {
   function deploySender() public {
-    // read environment variables
-    address wormhole = vm.envAddress("WORMHOLE_ADDRESS");
-
     // deploy the contract and set up the contract
-    new Sender(wormhole);
+    new NativeSender();
   }
 
   function run() public {

@@ -35,13 +35,16 @@ export declare namespace Messages {
   };
 }
 
-export interface ReceiverInterface extends utils.Interface {
+export interface WormholeAndNativeReceiverInterface extends utils.Interface {
   functions: {
     "consumedMessages(bytes32)": FunctionFragment;
     "decodeMessage(bytes)": FunctionFragment;
     "emitterAddress()": FunctionFragment;
     "emitterChainId()": FunctionFragment;
     "encodeMessage((uint8,string))": FunctionFragment;
+    "expectPayload(bytes32)": FunctionFragment;
+    "expectedPayloadHash()": FunctionFragment;
+    "l1SenderAddress()": FunctionFragment;
     "message()": FunctionFragment;
     "receiveMessage(bytes)": FunctionFragment;
     "wormhole()": FunctionFragment;
@@ -54,6 +57,9 @@ export interface ReceiverInterface extends utils.Interface {
       | "emitterAddress"
       | "emitterChainId"
       | "encodeMessage"
+      | "expectPayload"
+      | "expectedPayloadHash"
+      | "l1SenderAddress"
       | "message"
       | "receiveMessage"
       | "wormhole"
@@ -78,6 +84,18 @@ export interface ReceiverInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "encodeMessage",
     values: [Messages.UpdateMessageStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "expectPayload",
+    values: [PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "expectedPayloadHash",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "l1SenderAddress",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "message", values?: undefined): string;
   encodeFunctionData(
@@ -106,6 +124,18 @@ export interface ReceiverInterface extends utils.Interface {
     functionFragment: "encodeMessage",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "expectPayload",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "expectedPayloadHash",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "l1SenderAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "message", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "receiveMessage",
@@ -116,12 +146,12 @@ export interface ReceiverInterface extends utils.Interface {
   events: {};
 }
 
-export interface Receiver extends BaseContract {
+export interface WormholeAndNativeReceiver extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: ReceiverInterface;
+  interface: WormholeAndNativeReceiverInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -166,6 +196,15 @@ export interface Receiver extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string] & { encodedMessage: string }>;
 
+    expectPayload(
+      _expectedPayloadHash: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    expectedPayloadHash(overrides?: CallOverrides): Promise<[string]>;
+
+    l1SenderAddress(overrides?: CallOverrides): Promise<[string]>;
+
     message(overrides?: CallOverrides): Promise<[string]>;
 
     receiveMessage(
@@ -195,6 +234,15 @@ export interface Receiver extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  expectPayload(
+    _expectedPayloadHash: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  expectedPayloadHash(overrides?: CallOverrides): Promise<string>;
+
+  l1SenderAddress(overrides?: CallOverrides): Promise<string>;
+
   message(overrides?: CallOverrides): Promise<string>;
 
   receiveMessage(
@@ -223,6 +271,15 @@ export interface Receiver extends BaseContract {
       parsedMessage: Messages.UpdateMessageStruct,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    expectPayload(
+      _expectedPayloadHash: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    expectedPayloadHash(overrides?: CallOverrides): Promise<string>;
+
+    l1SenderAddress(overrides?: CallOverrides): Promise<string>;
 
     message(overrides?: CallOverrides): Promise<string>;
 
@@ -256,6 +313,15 @@ export interface Receiver extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    expectPayload(
+      _expectedPayloadHash: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    expectedPayloadHash(overrides?: CallOverrides): Promise<BigNumber>;
+
+    l1SenderAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
     message(overrides?: CallOverrides): Promise<BigNumber>;
 
     receiveMessage(
@@ -285,6 +351,17 @@ export interface Receiver extends BaseContract {
       parsedMessage: Messages.UpdateMessageStruct,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    expectPayload(
+      _expectedPayloadHash: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    expectedPayloadHash(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    l1SenderAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     message(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

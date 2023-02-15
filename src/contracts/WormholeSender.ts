@@ -35,7 +35,7 @@ export declare namespace Messages {
   };
 }
 
-export interface SenderInterface extends utils.Interface {
+export interface WormholeSenderInterface extends utils.Interface {
   functions: {
     "decodeMessage(bytes)": FunctionFragment;
     "encodeMessage((uint8,string))": FunctionFragment;
@@ -86,12 +86,12 @@ export interface SenderInterface extends utils.Interface {
   events: {};
 }
 
-export interface Sender extends BaseContract {
+export interface WormholeSender extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: SenderInterface;
+  interface: WormholeSenderInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,

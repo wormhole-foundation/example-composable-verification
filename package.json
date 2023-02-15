@@ -1,9 +1,12 @@
 {
   "scripts": {
-    "typechain": "typechain --target=ethers-v5 --out-dir=src/contracts out/Sender.sol/Sender.json out/Receiver.sol/Receiver.json",
-    "test": "ts-node src/test.ts"
+    "typechain": "rm -rf src/contracts && typechain --target=ethers-v5 --out-dir=src/contracts out/**/*.json",
+    "test": "ts-node src/test.ts",
+    "test-native-only": "ts-node src/testNativeOnly.ts",
+    "test-wormhole-and-native": "ts-node src/testWormholeAndNative.ts"
   },
   "devDependencies": {
+    "@eth-optimism/contracts": "^0.5.40",
     "@typechain/ethers-v5": "^10.2.0",
     "@types/node": "^18.13.0",
     "axios": "^1.3.3",

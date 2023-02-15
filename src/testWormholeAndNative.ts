@@ -1,8 +1,8 @@
 import axios from "axios";
 import { ethers } from "ethers";
 import {
-  WormholeReceiver__factory,
-  WormholeSender__factory,
+  WormholeAndNativeReceiver__factory,
+  WormholeAndNativeSender__factory,
 } from "./contracts";
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
@@ -18,20 +18,20 @@ function sleep(ms: number) {
 }
 
 (async () => {
-  console.log("Step 1. Send a message");
-  const ethProvider = new ethers.providers.JsonRpcProvider(
-    "https://rpc.ankr.com/eth_goerli"
-  );
-  const ethSigner = new ethers.Wallet(PRIVATE_KEY, ethProvider);
-  const ethContract = WormholeSender__factory.connect(
-    SENDER_ADDRESS,
-    ethSigner
-  );
-  const ethTx = await ethContract.sendMessage("hello world");
-  const ethReceipt = await ethTx.wait();
-  console.log(ethReceipt.transactionHash);
-  const sequence = BigInt(`${ethReceipt.logs[0].data.slice(0, 66)}`);
-
+  // console.log("Step 1. Send a message");
+  // const ethProvider = new ethers.providers.JsonRpcProvider(
+  //   "https://rpc.ankr.com/eth_goerli"
+  // );
+  // const ethSigner = new ethers.Wallet(PRIVATE_KEY, ethProvider);
+  // const ethContract = WormholeAndNativeSender__factory.connect(
+  //   SENDER_ADDRESS,
+  //   ethSigner
+  // );
+  // const ethTx = await ethContract.sendMessage("hello world");
+  // const ethReceipt = await ethTx.wait();
+  // console.log(ethReceipt.transactionHash);
+  // const sequence = BigInt(`${ethReceipt.logs[0].data.slice(0, 66)}`);
+  const sequence = 0;
   console.log(`Step 2. Fetching VAA 2/${SENDER_EMITTER}/${sequence}`);
   let vaa = "";
   while (!vaa) {
@@ -50,7 +50,7 @@ function sleep(ms: number) {
     "https://rpc.ankr.com/optimism_testnet"
   );
   const optSigner = new ethers.Wallet(PRIVATE_KEY, optProvider);
-  const optContract = WormholeReceiver__factory.connect(
+  const optContract = WormholeAndNativeReceiver__factory.connect(
     RECIEVER_ADDRESS,
     optSigner
   );

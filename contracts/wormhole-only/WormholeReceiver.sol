@@ -2,9 +2,9 @@
 pragma solidity ^0.8.13;
 
 import { IWormhole } from "../interfaces/IWormhole.sol";
-import "./Messages.sol";
+import "../shared/Messages.sol";
 
-contract Receiver is Messages {
+contract WormholeReceiver is Messages {
   /// Address of the Wormhole core contract on this chain
   IWormhole public immutable wormhole;
   /// Wormhole chain id of the emitter to accept

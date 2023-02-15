@@ -50,3 +50,11 @@ Test End-to-End
 ```bash
 SENDER_ADDRESS=<ETH_CONTRACT_ADDRESS> RECEIVER_ADDRESS=<OPT_CONTRACT_ADDRESS> PRIVATE_KEY=<YOUR_PRIVATE_KEY> npm test
 ```
+
+Example deploy Native only with Docker
+
+```bash
+docker run -v $PWD:/app foundry "cd app && forge script forge-scripts/native-only/deploy_sender.sol --rpc-url https://rpc.ankr.com/eth_goerli --private-key <YOUR_PRIVATE_KEY> --broadcast --slow"
+docker run -v $PWD:/app foundry "cd app && EMITTER_ADDRESS=<RESULT_FROM_ABOVE> forge script forge-scripts/native-only/deploy_receiver.sol --rpc-url https://rpc.ankr.com/optimism_testnet --private-key <YOUR_PRIVATE_KEY> --broadcast --slow"
+docker run -v $PWD:/app foundry "cd app && SENDER_ADDRESS=<FIRST_RESULT> RECEIVER_ADDRESS=<SECOND_RESULT> forge script forge-scripts/native-only/register_receiver.sol --rpc-url https://rpc.ankr.com/eth_goerli --private-key <YOUR_PRIVATE_KEY> --broadcast --slow"
+```
