@@ -1,11 +1,16 @@
-const axios = require("axios");
-const { ethers } = require("ethers");
+import axios from "axios";
+import { ethers } from "ethers";
+import { Receiver__factory, Sender__factory } from "./contracts";
 
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+if (!PRIVATE_KEY) throw new Error("PRIVATE_KEY is required!");
 const SENDER_ADDRESS = process.env.SENDER_ADDRESS;
+if (!SENDER_ADDRESS) throw new Error("SENDER_ADDRESS is required!");
 const RECIEVER_ADDRESS = process.env.RECEIVER_ADDRESS;
+if (!RECIEVER_ADDRESS) throw new Error("RECIEVER_ADDRESS is required!");
 const SENDER_EMITTER = SENDER_ADDRESS.slice(2).toLowerCase().padStart(64, "0");
 
-function sleep(ms) {
+function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
@@ -14,14 +19,8 @@ function sleep(ms) {
   const ethProvider = new ethers.providers.JsonRpcProvider(
     "https://rpc.ankr.com/eth_goerli"
   );
-  const ethSigner = new ethers.Wallet(process.env.PRIVATE_KEY, ethProvider);
-  const ethContract = new ethers.Contract(
-    SENDER_ADDRESS,
-    [
-      "function sendMessage(string memory _message) public payable returns (uint64 messageSequence)",
-    ],
-    ethSigner
-  );
+  const ethSigner = new ethers.Wallet(PRIVATE_KEY, ethProvider);
+  const ethContract = Sender__factory.connect(SENDER_ADDRESS, ethSigner);
   const ethTx = await ethContract.sendMessage("hello world");
   const ethReceipt = await ethTx.wait();
   console.log(ethReceipt.transactionHash);
@@ -43,13 +42,10 @@ function sleep(ms) {
   const optProvider = new ethers.providers.JsonRpcProvider(
     "https://rpc.ankr.com/optimism_testnet"
   );
-  const optSigner = new ethers.Wallet(process.env.PRIVATE_KEY, optProvider);
-  const optContract = new ethers.Contract(
-    RECIEVER_ADDRESS,
-    ["function receiveMessage(bytes memory _encodedMessage) public"],
-    optSigner
-  );
+  const optSigner = new ethers.Wallet(PRIVATE_KEY, optProvider);
+  const optContract = Receiver__factory.connect(RECIEVER_ADDRESS, optSigner);
   const optTx = await optContract.receiveMessage(`0x${vaa}`);
   const optReceipt = await optTx.wait();
   console.log(optReceipt.transactionHash);
+  console.log("received:", await optContract.message());
 })();

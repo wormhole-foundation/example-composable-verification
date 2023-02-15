@@ -5,7 +5,7 @@ pragma solidity ^0.8.17;
 import "forge-std/Script.sol";
 import "forge-std/console.sol";
 
-import { Receiver } from "../src/wormhole-only/Receiver.sol";
+import { Receiver } from "../contracts/wormhole-only/Receiver.sol";
 
 contract ContractScript is Script {
   function deployReceiver() public {

@@ -23,7 +23,14 @@ docker pull ghcr.io/foundry-rs/foundry:latest
 # Tag for shorter commands
 docker tag ghcr.io/foundry-rs/foundry:latest foundry:latest
 # Example build
-docker run -v $PWD:/app foundry "forge build --root /app"
+docker run -v $PWD:/app foundry "forge build --root /app -c contracts"
+```
+
+Build the contracts and typescript bindings
+
+```bash
+forge build -c contracts
+npm run typechain
 ```
 
 Deploy Sender on Ethereum
@@ -41,5 +48,5 @@ WORMHOLE_ADDRESS=0x6b9C8671cdDC8dEab9c719bB87cBd3e782bA6a35 EMITTER_CHAIN_ID=2 E
 Test End-to-End
 
 ```bash
-SENDER_ADDRESS=<ETH_CONTRACT_ADDRESS> RECEIVER_ADDRESS=<OPT_CONTRACT_ADDRESS> PRIVATE_KEY=<YOUR_PRIVATE_KEY> node node-scripts/integration-test.js
+SENDER_ADDRESS=<ETH_CONTRACT_ADDRESS> RECEIVER_ADDRESS=<OPT_CONTRACT_ADDRESS> PRIVATE_KEY=<YOUR_PRIVATE_KEY> npm test
 ```
