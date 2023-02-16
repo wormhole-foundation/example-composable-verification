@@ -21,6 +21,7 @@ contract WormholeAndSignerReceiver is Messages {
   /// @param _wormhole The address of the Wormhole core contract
   /// @param _emitterChainId The emitter chain id to accept messages from
   /// @param _emitterAddress The emitter address to accept message from
+  /// @param _signerAddress The additional signer for confirming message validity
   constructor(
     address _wormhole,
     uint16 _emitterChainId,
