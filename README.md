@@ -46,3 +46,10 @@ Deploy and test "Wormhole and Native" contracts
 PRIVATE_KEY=<YOUR_PRIVATE_KEY> npm run deploy-wormhole-and-native
 PRIVATE_KEY=<YOUR_PRIVATE_KEY> npm run test-wormhole-and-native
 ```
+
+Deploy and test "Wormhole and Signer" contracts
+
+```bash
+PRIVATE_KEY=<YOUR_PRIVATE_KEY> npm run deploy-wormhole-and-signer
+PRIVATE_KEY=<YOUR_PRIVATE_KEY> npm run test-wormhole-and-signer
+```

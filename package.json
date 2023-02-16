@@ -3,8 +3,10 @@
     "typechain": "rm -rf src/contracts && typechain --target=ethers-v5 --out-dir=src/contracts out/**/*.json",
     "deploy-wormhole-only": "ts-node src/deploy/deployWormholeOnly.ts",
     "deploy-wormhole-and-native": "ts-node src/deploy/deployWormholeAndNative.ts",
+    "deploy-wormhole-and-signer": "ts-node src/deploy/deployWormholeAndSigner.ts",
     "test-wormhole-only": "ts-node src/testWormholeOnly.ts",
-    "test-wormhole-and-native": "ts-node src/testWormholeAndNative.ts"
+    "test-wormhole-and-native": "ts-node src/testWormholeAndNative.ts",
+    "test-wormhole-and-signer": "ts-node src/testWormholeAndSigner.ts"
   },
   "devDependencies": {
     "@eth-optimism/contracts": "^0.5.40",
