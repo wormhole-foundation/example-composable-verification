@@ -33,28 +33,16 @@ forge build -c contracts
 npm run typechain
 ```
 
-Deploy Sender on Ethereum
+Deploy and test "Wormhole only" contracts
 
 ```bash
-WORMHOLE_ADDRESS=0x706abc4E45D419950511e474C7B9Ed348A4a716c forge script forge-scripts/deploy_sender.sol --rpc-url https://rpc.ankr.com/eth_goerli --private-key <YOUR_PRIVATE_KEY> --broadcast --slow
+PRIVATE_KEY=<YOUR_PRIVATE_KEY> npm run deploy-wormhole-only
+PRIVATE_KEY=<YOUR_PRIVATE_KEY> npm run test-wormhole-only
 ```
 
-Deploy Receiver on Optimism
+Deploy and test "Wormhole and Native" contracts
 
 ```bash
-WORMHOLE_ADDRESS=0x6b9C8671cdDC8dEab9c719bB87cBd3e782bA6a35 EMITTER_CHAIN_ID=2 EMITTER_ADDRESS=0x<32-byte padded contract address> forge script forge-scripts/deploy_receiver.sol --rpc-url https://rpc.ankr.com/optimism_testnet --private-key <YOUR_PRIVATE_KEY> --broadcast --slow
-```
-
-Test End-to-End
-
-```bash
-SENDER_ADDRESS=<ETH_CONTRACT_ADDRESS> RECEIVER_ADDRESS=<OPT_CONTRACT_ADDRESS> PRIVATE_KEY=<YOUR_PRIVATE_KEY> npm test
-```
-
-Example deploy Native only with Docker
-
-```bash
-docker run -v $PWD:/app foundry "cd app && forge script forge-scripts/native-only/deploy_sender.sol --rpc-url https://rpc.ankr.com/eth_goerli --private-key <YOUR_PRIVATE_KEY> --broadcast --slow"
-docker run -v $PWD:/app foundry "cd app && EMITTER_ADDRESS=<RESULT_FROM_ABOVE> forge script forge-scripts/native-only/deploy_receiver.sol --rpc-url https://rpc.ankr.com/optimism_testnet --private-key <YOUR_PRIVATE_KEY> --broadcast --slow"
-docker run -v $PWD:/app foundry "cd app && SENDER_ADDRESS=<FIRST_RESULT> RECEIVER_ADDRESS=<SECOND_RESULT> forge script forge-scripts/native-only/register_receiver.sol --rpc-url https://rpc.ankr.com/eth_goerli --private-key <YOUR_PRIVATE_KEY> --broadcast --slow"
+PRIVATE_KEY=<YOUR_PRIVATE_KEY> npm run deploy-wormhole-and-native
+PRIVATE_KEY=<YOUR_PRIVATE_KEY> npm run test-wormhole-and-native
 ```

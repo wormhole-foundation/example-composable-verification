@@ -2,8 +2,8 @@ import axios from "axios";
 import { ethers } from "ethers";
 import ora from "ora";
 import {
-  WormholeAndNativeReceiver__factory,
-  WormholeAndNativeSender__factory,
+  WormholeReceiver__factory,
+  WormholeSender__factory,
 } from "./contracts";
 import addressToEmitter from "./utils/addressToEmitter";
 import {
@@ -18,9 +18,9 @@ import parseSequenceFromReceipt from "./utils/parseSequenceFromReceipt";
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 if (!PRIVATE_KEY) throw new Error("PRIVATE_KEY is required!");
-const SENDER_ADDRESS = DEPLOYMENTS.wormholeAndNative.eth;
+const SENDER_ADDRESS = DEPLOYMENTS.wormholeOnly.eth;
 if (!SENDER_ADDRESS) throw new Error("SENDER_ADDRESS is required!");
-const RECIEVER_ADDRESS = DEPLOYMENTS.wormholeAndNative.opt;
+const RECIEVER_ADDRESS = DEPLOYMENTS.wormholeOnly.opt;
 if (!RECIEVER_ADDRESS) throw new Error("RECIEVER_ADDRESS is required!");
 const SENDER_EMITTER = addressToEmitter(SENDER_ADDRESS);
 
@@ -31,17 +31,16 @@ function sleep(ms: number) {
 (async () => {
   const ethProvider = new ethers.providers.JsonRpcProvider(ETH_RPC);
   const ethSigner = new ethers.Wallet(PRIVATE_KEY, ethProvider);
-  const ethContract = WormholeAndNativeSender__factory.connect(
+  const ethContract = WormholeSender__factory.connect(
     SENDER_ADDRESS,
     ethSigner
   );
   const optProvider = new ethers.providers.JsonRpcProvider(OPT_RPC);
   const optSigner = new ethers.Wallet(PRIVATE_KEY, optProvider);
-  const optContract = WormholeAndNativeReceiver__factory.connect(
+  const optContract = WormholeReceiver__factory.connect(
     RECIEVER_ADDRESS,
     optSigner
   );
-  const previousExpectedHash = await optContract.expectedPayloadHash();
 
   let log;
   log = ora("Sending message from Ethereum").start();
@@ -63,15 +62,6 @@ function sleep(ms: number) {
   }
   log.succeed();
   console.log(`${vaaUrl}\n`);
-
-  log = ora("Waiting for the native bridge message to arrive").start();
-  let currentExpectedHash = await optContract.expectedPayloadHash();
-  while (previousExpectedHash === currentExpectedHash) {
-    await sleep(1000);
-    currentExpectedHash = await optContract.expectedPayloadHash();
-  }
-  log.succeed();
-  console.log();
 
   log = ora("Receiving message on Optimism").start();
   const optTx = await optContract.receiveMessage(`0x${vaa}`);

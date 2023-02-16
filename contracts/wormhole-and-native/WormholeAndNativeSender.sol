@@ -65,8 +65,10 @@ contract WormholeAndNativeSender is Messages {
       200 // "instant" - this is just an example, do not wait for finality
     );
 
-    // Send the expected message hash via the native bridge
-    bytes32 messageHash = keccak256(encodedMessage);
+    // Send the expected message hash and sequence via the native bridge
+    bytes32 messageHash = keccak256(
+      abi.encodePacked(encodedMessage, messageSequence)
+    );
     ICrossDomainMessenger(crossDomainMessengerAddr).sendMessage(
       receiverL2Addr,
       abi.encodeWithSignature("expectPayload(bytes32)", messageHash),

@@ -66,9 +66,11 @@ contract WormholeAndNativeReceiver is Messages {
       "invalid emitter address"
     );
 
-    // verify that the payload is the one we expected
+    // verify that the payload and sequence is the one we expected
     require(
-      keccak256(wormholeMessage.payload) == expectedPayloadHash,
+      keccak256(
+        abi.encodePacked(wormholeMessage.payload, wormholeMessage.sequence)
+      ) == expectedPayloadHash,
       "unexpected payload"
     );
 
