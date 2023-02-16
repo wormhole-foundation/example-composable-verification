@@ -36,10 +36,10 @@ contract WormholeAndSignerReceiver is Messages {
   }
 
   /// Used to receive a message
-  /// @param _encodedMessage The encoded wormhole message (VAA) to receive
+  /// @param _vaa The encoded wormhole message (VAA) to receive
   /// @param _additionalSignature The signature from signerAddress to additionally verify
   function receiveMessage(
-    bytes memory _encodedMessage,
+    bytes memory _vaa,
     bytes memory _additionalSignature
   ) public {
     // call the Wormhole core contract to parse and verify the encodedMessage
@@ -47,7 +47,7 @@ contract WormholeAndSignerReceiver is Messages {
       IWormhole.VM memory wormholeMessage,
       bool valid,
       string memory reason
-    ) = wormhole.parseAndVerifyVM(_encodedMessage);
+    ) = wormhole.parseAndVerifyVM(_vaa);
 
     // confirm that the Wormhole core contract verified the message
     require(valid, reason);

@@ -30,14 +30,14 @@ contract WormholeReceiver is Messages {
   }
 
   /// Used to receive a message
-  /// @param _encodedMessage The encoded wormhole message (VAA) to receive
-  function receiveMessage(bytes memory _encodedMessage) public {
+  /// @param _vaa The encoded wormhole message (VAA) to receive
+  function receiveMessage(bytes memory _vaa) public {
     // call the Wormhole core contract to parse and verify the encodedMessage
     (
       IWormhole.VM memory wormholeMessage,
       bool valid,
       string memory reason
-    ) = wormhole.parseAndVerifyVM(_encodedMessage);
+    ) = wormhole.parseAndVerifyVM(_vaa);
 
     // confirm that the Wormhole core contract verified the message
     require(valid, reason);
