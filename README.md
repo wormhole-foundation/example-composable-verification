@@ -1,3 +1,5 @@
+This repository is deprecated and archived. If you are want to send/receive Wormhole messages, please refer to the up-to-date demo here: https://github.com/wormhole-foundation/demo-wormhole-messaging
+
 # Composable Verification Example
 
 See [Hello World](https://github.com/wormhole-foundation/wormhole-scaffolding/blob/main/docs/01_hello_world.md) for a more complete example of sending and receiving messages.
